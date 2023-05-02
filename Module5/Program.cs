@@ -5,6 +5,7 @@ internal class Program
 {
     private static void Main(string[] args)
     {
+        //Метод вывода результатов на экран
         static void ShowUserData((string UserName, string UserLastName, int UserAge, bool UserHavePet, bool UserHaveColors) UserData, string[] UserPetNames, string[] UserColors)
         {
             Console.WriteLine("Здравствуйте {0} {1}. Вам {2} лет.", UserData.UserName, UserData.UserLastName, UserData.UserAge);
@@ -27,6 +28,7 @@ internal class Program
             else
                 Console.WriteLine("У вас нет любимых цветов.");
         }
+        //Метод сбора информации о пользователе
         static (string UserName, string UserLastName, int UserAge, bool UserHavePet, bool UserHaveColors) GetUserData(out string[] UserPetNames, out string[] UserColors)
         {
             (string UserName, string UserLastName, int UserAge, bool UserHavePet, bool UserHaveColors) UserData;
@@ -48,81 +50,9 @@ internal class Program
             UserData.UserHavePet = UserHaveEnv;
             UserColors = GetUserEnv("color", out UserHaveEnv);
             UserData.UserHaveColors = UserHaveEnv;
-            //UserData.UserHaveColors = UserHaveColors;
             return UserData;
         }
-        static string[] GetUserPet(out bool UserHavePet)
-        {
-            Console.WriteLine("У Вас есть домашние животные? (y/n)");
-            string UserHavePetАnswer = Console.ReadLine();
-            while (IsCorrect(UserHavePetАnswer, "string", out int UsesAnswerInt))
-            {
-                Console.WriteLine("Вы ввели неверный символ!");
-                Console.WriteLine("У Вас есть домашние животные? (y/n)");
-                UserHavePetАnswer = Console.ReadLine();
-            }
-            var UserPetNames = new string[] {};
-            switch (UserHavePetАnswer)
-            {
-                case "y":
-                    UserHavePet = true;
-                    int UserAnswerInt;
-                    Console.WriteLine("Сколько у вас домашних животных?");
-                    string UserPetColString = Console.ReadLine();
-                    while (IsCorrect(UserPetColString, "int", out UserAnswerInt))
-                    {
-                        Console.WriteLine("Вы ввели неверный символ!");
-                        Console.WriteLine("Сколько у вас домашних животных?");
-                        UserPetColString = Console.ReadLine();
-                    }
-                    UserPetNames = ReadDataFromConsole(UserAnswerInt, "pet");
-                    break;
-                case "n":
-                    Console.WriteLine("Очень жаль. Рекомендую завести.");
-                    UserHavePet = false;
-                    break;
-                default:
-                    UserHavePet = false;
-                    break;
-            }
-            return UserPetNames;
-        }
-        static string[] GetUserColors(out bool UserHaveColors)
-        {
-            Console.WriteLine("У Вас есть любимые цвета? (y/n)");
-            string UserHaveColorsАnswer = Console.ReadLine();
-                while(IsCorrect(UserHaveColorsАnswer, "string", out int UsesAnswerInt))
-                {
-                    Console.WriteLine("Вы ввели неверный символ!");
-                    Console.WriteLine("У Вас есть любимые цвета? (y/n)");
-                    UserHaveColorsАnswer = Console.ReadLine();
-                }
-            var UserColors = new string[] { };
-            switch (UserHaveColorsАnswer)
-            {
-                case "y":
-                    UserHaveColors = true;
-                    int UserAnswerInt;
-                    Console.WriteLine("Сколько у вас любимых цветов?");
-                    string UserColorsColString = Console.ReadLine();
-                    while (IsCorrect(UserColorsColString, "int", out UserAnswerInt))
-                    {
-                        Console.WriteLine("Вы ввели неверный символ!");
-                        Console.WriteLine("Сколько у вас любимых цветов?");
-                        UserColorsColString = Console.ReadLine();
-                    }
-                    UserColors = ReadDataFromConsole(UserAnswerInt, "color");
-                    break;
-                case "n":
-                    Console.WriteLine("Очень жаль.");
-                    UserHaveColors = false;
-                    break;
-                default:
-                    UserHaveColors = false;
-                    break;
-            }
-            return UserColors;
-        }
+        //Метод сбора информации о предпочтении пользователя с помещением их в массив, в зависимости от переданного в метод параметра
         static string[] GetUserEnv(string UserEnvType, out bool UserHaveEnv)
         {
             string UserAnswer = "";
@@ -149,7 +79,6 @@ internal class Program
             while (IsCorrect(UserHaveEnvАnswer, "string", out int UsesAnswerInt))
             {
                 Console.WriteLine("{0}\n{1}", ErrorString, UserAnswer);
-                //Console.WriteLine(UserAnswer);
                 UserHaveEnvАnswer = Console.ReadLine();
             }
             var UserEnvNames = new string[] { };
@@ -163,7 +92,6 @@ internal class Program
                     while (IsCorrect(UserEnvColString, "int", out UserAnswerInt))
                     {
                         Console.WriteLine("{0}\n{1}", ErrorString, UserAnswer2);
-                        //Console.WriteLine(UserAnswer2);
                         UserEnvColString = Console.ReadLine();
                     }
                     UserEnvNames = ReadDataFromConsole(UserAnswerInt, UserEnvType);
@@ -178,10 +106,11 @@ internal class Program
             }
             return UserEnvNames;
         }
-        static string[] ReadDataFromConsole(int ArrayCol, string ArrayType)
+        //Метод формирования массива предпочтений пользователя, в зависимости от переданного в метод параметра
+        static string[] ReadDataFromConsole(int ArrayCol, string UserEnvType)
         {
             string UserAnswer = "";
-            switch (ArrayType)
+            switch (UserEnvType)
             {
                 case "pet":
                     UserAnswer = "Введите кличку животного номер";
@@ -199,6 +128,7 @@ internal class Program
             }
             return ResultArray;
         }
+        //Метод проверки корректности введенного пользователем значения, в зависимости от переданного в метод параметра
         static bool IsCorrect(string UserAnswerString, string UserAnswerType, out int UserAnswerInt)
         {
                 switch (UserAnswerType)
